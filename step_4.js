@@ -231,3 +231,37 @@ while (true) {
   console.log(answer_ls[0]);
   answer_ls.shift();
 }
+
+// 문제번호:4344번; 평균은 넘겠지
+const fs = require('fs');
+const stdin = (
+  process.platform === 'linux'
+    ? fs.readFileSync('/dev/stdin').toString()
+    : `5
+5 50 50 70 80 100
+7 100 95 90 80 70 60 50
+3 70 90 80
+3 70 90 81
+9 100 99 98 97 96 95 94 93 91
+`
+).split('\n');
+
+const input = (() => {
+  let line = 0;
+  return () => stdin[line++];
+})(); // 여기까진 고정으로 사용
+
+// 로직 시작
+let totalCaseNum = input();
+while (true) {
+  input_ = input();
+  if (!input_) {
+    break;
+  }
+  let CaseInfo = input_.split(' ').map(Number);
+  let score = CaseInfo.slice(1, CaseInfo.length); // 점수 리스트
+  let average = score.reduce((a, b) => a + b, 0) / score.length; // 학생들 평균점수
+  let niceStudent = score.map((element) => (element > average ? 1 : 0)); // 평균넘은 학생수 리스트
+  let niceStudentCount = niceStudent.reduce((a, b) => a + b, 0); // 평균넘은 학생수 배열내 합산
+  console.log(((niceStudentCount / niceStudent.length) * 100).toFixed(3) + '%'); // 양식맞춰서 출력
+}
