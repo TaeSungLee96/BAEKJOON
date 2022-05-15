@@ -209,7 +209,7 @@ const input = (() => {
 // 로직 시작
 let str = input().split("");
 
-// 문제번호:2941번; 크로아티아 알파벳 ### 푸는중
+// 문제번호:2941번; 크로아티아 알파벳
 const fs = require("fs");
 const { join } = require("path");
 const stdin = (
@@ -226,34 +226,71 @@ const input = (() => {
 
 // 로직 시작
 var str = input();
-var srtList = Array(str);
-var result = [];
 croatiaWordList = ["c=", "c-", "dz=", "d-", "lj", "nj", "s=", "z="];
 
-idx = 0;
-for (let i = 0; i < croatiaWordList.length; i++) {
-  console.log(1, srtList);
-  if (srtList[idx].includes(croatiaWordList[i])) {
-    srtList = srtList.split(croatiaWordList[i]);
-    console.log(2, srtList);
-  }
-  idx++;
+for (let i of croatiaWordList) {
+  str = str.split(i).join("*");
 }
+console.log(str.length);
 
-// 문제번호:1316번; 그룹 단어 체커 ### 푸는중
+// 문제번호:1316번; 그룹 단어 체커
 const fs = require("fs");
 const { join } = require("path");
 const stdin = (
   process.platform === "linux"
     ? fs.readFileSync("/dev/stdin").toString()
-    : `ljes=njak`
-) //lj, nj, e, s, a, k
-  .split("\n");
+    : `3
+hapappy
+new
+year`
+).split("\n");
 
 const input = (() => {
   let line = 0;
-  return () => stdin[line];
+  return () => stdin[line++];
 })(); // 여기까진 고정으로 사용
 
 // 로직 시작
-var str = input();
+const num = input();
+var answer = 0;
+
+for (let i = 0; i < num; i++) {
+  var strList = input().split("");
+  var noGroupAlphabet = 0;
+  var limit = strList.length;
+
+  // 한 행 로직 처리 시작
+  for (let j = 0; j < limit; j++) {
+    let checkStr = strList[j];
+    let count = strList.filter((element) => checkStr === element).length;
+
+    // 1개짜리 알파벳은 그룹단어이므로 패스시키기
+    if (count === 1) {
+      continue;
+    }
+    // 1개짜리 알파벳이 아닌단어는 그룹단어인지 검사하기
+    else {
+      for (let k = 0; k < count; k++) {
+        // idx번쨰 요소 제거전 idx 번호
+        idx = strList.indexOf(checkStr);
+        // idx번째 요소 1번만 지우기
+        if (idx > -1) {
+          strList.splice(idx, 1);
+          limit += 1;
+        }
+        // idx번쨰 요소 제거후 idx 번호
+        secondIdx = strList.indexOf(checkStr);
+
+        if (idx != secondIdx && secondIdx != -1) {
+          noGroupAlphabet += 1;
+        } else if (idx == secondIdx) {
+        }
+      }
+    }
+  }
+
+  if (noGroupAlphabet === 0) {
+    answer += 1;
+  }
+}
+console.log(answer);
